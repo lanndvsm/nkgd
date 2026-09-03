@@ -85,6 +85,6 @@ if not df.empty:
     st.plotly_chart(fig, use_container_width=True)
 
     st.subheader("📜 Lịch sử giao dịch")
-    st.dataframe(df, use_//container_width=True)
+    st.dataframe(df, use_container_width=True)
 else:
     st.info("Hãy nhập giao dịch đầu tiên ở cột bên trái!")
