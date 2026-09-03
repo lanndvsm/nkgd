@@ -15,12 +15,14 @@ class GoogleSheetManager:
         self.sheet = self.client.open(self.sheet_name).sheet1
 
     def authenticate(self):
-        # Lấy thông tin bảo mật từ Streamlit Secrets
+        """Xác thực với Google Sheets"""
         secrets = st.secrets["gcp_service_account"]
-        # Chuyển dictionary từ secrets thành định dạng mà oauth2client hiểu
-        info = json.loads(json.dumps(secrets)) 
-        scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
-        creds = ServiceAccountCredentials.from_json_keyfile_dict(info, scope)
+        scope = [
+            "https://spreadsheets.google.com/feeds",
+            "https://www.googleapis.com/auth/drive"
+        ]
+        # ✅ Sử dụng trực tiếp dictionary
+        creds = ServiceAccountCredentials.from_json_keyfile_dict(secrets, scope)
         return gspread.authorize(creds)
 
     def load_data(self):
@@ -59,7 +61,6 @@ with st.sidebar.form("trade_form", clear_on_submit=True):
 
     if submit:
         pl = (exit_p - entry) * qty if side == "Buy" else (entry - exit_p) * qty
-        # Tạo danh sách để gửi lên Google Sheet (phải đúng thứ tự cột)
         row = [str(date), asset, side, entry, exit_p, qty, pl, notes]
         db.add_trade(row)
         st.sidebar.success("Đã đồng bộ lên Google Sheets!")
@@ -69,7 +70,7 @@ df = db.load_data()
 
 if not df.empty:
     # Ép kiểu dữ liệu số vì Google Sheet trả về dạng text/object
-    df['pl'] = pd.to_numeric(df['pl'], errors='coerce').fillna(0)
+    df['pl'] = pd.to_numeric(df['pl'], errors='coerce')
     
     total_pl = df['pl'].sum()
     win_rate = (df['pl'] > 0).sum() / len(df) * 100
@@ -85,6 +86,6 @@ if not df.empty:
     st.plotly_chart(fig, use_container_width=True)
 
     st.subheader("📜 Lịch sử giao dịch")
-    st.dataframe(df, use_container_width=True)
+    st.dataframe(df, use_container_width=True)  # ✅ Sửa lỗi //
 else:
     st.info("Hãy nhập giao dịch đầu tiên ở cột bên trái!")
