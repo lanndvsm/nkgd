@@ -69,7 +69,7 @@ df = db.load_data()
 
 if not df.empty:
     # Ép kiểu dữ liệu số vì Google Sheet trả về dạng text/object
-    df['pl'] = pd.to_numeric(df['pl'])
+    df['pl'] = pd.to_numeric(df['pl'], errors='coerce').fillna(0)
     
     total_pl = df['pl'].sum()
     win_rate = (df['pl'] > 0).sum() / len(df) * 100
