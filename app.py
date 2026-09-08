@@ -69,6 +69,17 @@ with st.sidebar.form("trade_form", clear_on_submit=True):
 df = db.load_data()
 
 if not df.empty:
+
+    # ===== DEBUG: Kiểm tra dữ liệu 'pl' =====
+st.write("**🔍 DEBUG INFO:**")
+st.write(f"Kiểu dữ liệu 'pl' hiện tại: {df['pl'].dtype}")
+st.write(f"5 giá trị đầu tiên của 'pl':")
+st.write(df['pl'].head())
+st.write(f"Giá trị unique của 'pl':")
+st.write(df['pl'].unique())
+# ========================================
+
+    
     # Ép kiểu dữ liệu số vì Google Sheet trả về dạng text/object
     df['pl'] = pd.to_numeric(df['pl'], errors='coerce')
     
