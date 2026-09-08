@@ -68,8 +68,6 @@ with st.sidebar.form("trade_form", clear_on_submit=True):
 # --- MAIN PAGE: DASHBOARD ---
 df = db.load_data()
 
-if not df.empty:
-
 if st.button("Load Data"):
     # ===== DEBUG: Kiểm tra dữ liệu 'pl' =====
     st.write("**🔍 DEBUG INFO:**")
@@ -87,8 +85,6 @@ if st.button("Load Data"):
     st.write(f"**Số hàng sau lọc:** {len(df_display)}")
     
     st.dataframe(df_display)
-
-
     
     # Ép kiểu dữ liệu số vì Google Sheet trả về dạng text/object
     df['pl'] = pd.to_numeric(df['pl'], errors='coerce')
