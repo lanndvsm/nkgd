@@ -72,6 +72,9 @@ if not df.empty:
     # Ép kiểu dữ liệu số vì Google Sheet trả về dạng text/object
     df['pl'] = pd.to_numeric(df['pl'], errors='coerce')
     
+    # ✅ THÊM DÒNG NÀY: Lọc bỏ các hàng có PL = 0
+    df_display = df[df['pl'] != 0].copy()
+    
     total_pl = df['pl'].sum()
     win_rate = (df['pl'] > 0).sum() / len(df) * 100
     
@@ -86,6 +89,7 @@ if not df.empty:
     st.plotly_chart(fig, use_container_width=True)
 
     st.subheader("📜 Lịch sử giao dịch")
-    st.dataframe(df, use_container_width=True)  # ✅ Sửa lỗi //
+    st.dataframe(df_display, use_container_width=True)  # ✅ THAY df THÀNH df_display
+
 else:
     st.info("Hãy nhập giao dịch đầu tiên ở cột bên trái!")
