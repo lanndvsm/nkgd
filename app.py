@@ -68,15 +68,16 @@ with st.sidebar.form("trade_form", clear_on_submit=True):
 # --- MAIN PAGE: DASHBOARD ---
 df = db.load_data()
 
-if st.button("Load Data"):
-    # ===== DEBUG: Kiểm tra dữ liệu 'pl' =====
-    st.write("**🔍 DEBUG INFO:**")
-    st.write(f"Kiểu dữ liệu 'pl' hiện tại: {df['pl'].dtype}")
-    st.write(f"5 giá trị đầu tiên của 'pl':")
-    st.write(df['pl'].head())
-    st.write(f"Giá trị unique của 'pl':")
-    st.write(df['pl'].unique())
-    # ========================================
+if not df.empty:
+    if st.button("Load Data"):
+        # ===== DEBUG: Kiểm tra tên cột =====
+        st.write("**🔍 DEBUG INFO:**")
+        st.write(f"Danh sách tất cả cột: {list(df.columns)}")
+        st.write(f"Kiểu dữ liệu của từng cột:")
+        st.write(df.dtypes)
+        st.write(f"5 dòng đầu tiên:")
+        st.write(df.head())
+        # ====================================
     
     df['pl'] = pd.to_numeric(df['pl'], errors='coerce')
     df_display = df[df['pl'] != 0].copy()
