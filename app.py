@@ -70,14 +70,24 @@ df = db.load_data()
 
 if not df.empty:
 
+if st.button("Load Data"):
     # ===== DEBUG: Kiểm tra dữ liệu 'pl' =====
-st.write("**🔍 DEBUG INFO:**")
-st.write(f"Kiểu dữ liệu 'pl' hiện tại: {df['pl'].dtype}")
-st.write(f"5 giá trị đầu tiên của 'pl':")
-st.write(df['pl'].head())
-st.write(f"Giá trị unique của 'pl':")
-st.write(df['pl'].unique())
-# ========================================
+    st.write("**🔍 DEBUG INFO:**")
+    st.write(f"Kiểu dữ liệu 'pl' hiện tại: {df['pl'].dtype}")
+    st.write(f"5 giá trị đầu tiên của 'pl':")
+    st.write(df['pl'].head())
+    st.write(f"Giá trị unique của 'pl':")
+    st.write(df['pl'].unique())
+    # ========================================
+    
+    df['pl'] = pd.to_numeric(df['pl'], errors='coerce')
+    df_display = df[df['pl'] != 0].copy()
+    
+    st.write(f"**Số hàng trước lọc:** {len(df)}")
+    st.write(f"**Số hàng sau lọc:** {len(df_display)}")
+    
+    st.dataframe(df_display)
+
 
     
     # Ép kiểu dữ liệu số vì Google Sheet trả về dạng text/object
